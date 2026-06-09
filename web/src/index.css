@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+.expanded {
+    view-transition-name: expand;
+    contain: layout;
+}
+
+.collapsed {
+    view-transition-name: expand;
+    contain: layout;
+}
