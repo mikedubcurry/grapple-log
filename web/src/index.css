@@ -1,11 +1,22 @@
 @import "tailwindcss";
 
-.expanded {
-    view-transition-name: expand;
-    contain: layout;
+/* slow down the card box morph */
+::view-transition-group(session-card-*) {
+    animation-duration: 300ms;
+    animation-timing-function: ease-out;
 }
 
-.collapsed {
-    view-transition-name: expand;
-    contain: layout;
+/* let the old content exit quickly */
+::view-transition-old(session-card-*) {
+    animation-duration: 100ms;
+}
+
+/* delay the new content until the box is mostly grown */
+::view-transition-new(session-card-*) {
+    animation-delay: 150ms;
+    animation-duration: 200ms;
+}
+/* fallback: targets all transition groups */
+::view-transition-group(*) {
+    animation-duration: 300ms;
 }

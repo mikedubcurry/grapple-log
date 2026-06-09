@@ -152,36 +152,80 @@ export const Dashboard = () => {
             {/* session list */}
             <div className="flex flex-col gap-4">
                 {data.entries.map(session => (
-                    <div className="border p-4" key={session.id}>
-                        <p className="font-bold">{session.sessionDate.toLocaleDateString()}</p>
-                        {session.arts.map(art => (
-                            <Fragment key={art.art}>
-                                <p className="underline">{art.art}</p>
-                                <ul className="pl-8 list-disc">
-                                    {art.techniques.map(tech => (
-                                        <li key={tech.technique}>{tech.technique}</li>
-                                    ))}
-                                </ul>
-                            </Fragment>
-                        ))}
-                        <Link to={`/session/${session.id}`} className="py-4 text-xl"><span className="underline">Details</span>&#8614;</Link>
-                        <p className="">Last Updated: {session.lastUpdated.toLocaleDateString()}</p>
-                    </div>
+                    <SessionCard session={session} key={session.id} />
                 ))}
             </div>
 
-
-            <div>
-                <button onClick={handleTransition}>{expanded ? 'collapse ^' : 'expand v'}</button>
-                {expanded ? (
-                    <>
-                    <p>woohoo</p>
-                    <p className="expanded">im expanded</p>
-                    </>
-                ) : (
-                    <p className="collapsed">expand me!</p>
-                )}
-            </div>
         </main>
+    )
+}
+
+type Session = {
+    id: number;
+    sessionDate: Date;
+    lastUpdated: Date;
+    arts: Art[];
+    injuries: Injury[];
+}
+
+type Art = {
+    art: string;
+    techniques: Technique[];
+}
+
+type Injury = {
+    injury: string;
+    level: number;
+    note: string;
+}
+
+
+type Technique = {
+    technique: string;
+    description: string;
+}
+
+const SessionCard = ({
+    session
+}: {
+    session: Session;
+}) => {
+    const [expanded, setExpanded] = useState(false);
+
+    const toggleExpanded = () => {
+        if (!document.startViewTransition) {
+            setExpanded(!expanded);
+            return;
+        }
+
+        document.startViewTransition(() => {
+            flushSync(() => {
+                setExpanded(!expanded)
+            })
+        })
+    }
+    return (
+        <div
+            className="border p-4"
+            style={{ viewTransitionName: `session-card-${session.id}` }}
+        >
+            <div className="flex justify-between items-center">
+                <p className="font-bold">{session.sessionDate.toLocaleDateString()}</p>
+                <button className="text-3xl p-2" onClick={toggleExpanded} style={{ transition: 'all .3s ease', rotate: expanded ? '0deg' : '180deg' }}>^</button>
+            </div>
+
+            {session.arts.map(art => (
+                <Fragment key={art.art}>
+                    <p className="underline" style={{ viewTransitionName: `session-${session.id}-${art.art.replace(/\s+/g, '-')}` }}>{art.art}</p>
+                    <ul className="pl-8 list-disc" style={{ viewTransitionName: `art-list-${session.id}-${art.art.replace(/\s+/g, '-')}` }}>
+                        {expanded && art.techniques.map(tech => (
+                            <li key={tech.technique}>{tech.technique}</li>
+                        ))}
+                    </ul>
+                </Fragment>
+            ))}
+            <Link to={`/session/${session.id}`} className="py-4 text-xl"><span className="underline">Details</span>&#8614;</Link>
+            <p className="">Last Updated: {session.lastUpdated.toLocaleDateString()}</p>
+        </div>
     )
 }

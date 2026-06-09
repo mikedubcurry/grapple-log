@@ -3,6 +3,7 @@ import { useAuth } from "../context/authContext"
 import { StyledInput } from "../components/StyledInput"
 
 export const Login = () => {
+    const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const { login } = useAuth()
 
@@ -19,6 +20,12 @@ export const Login = () => {
             <h1 className="text-center font-bold text-2xl">grapple-log</h1>
 
             <div className="flex flex-col border p-8">
+
+                <StyledInput
+                    state={[username, setUsername]}
+                    label="UN"
+                    validator={un => un.length > 0}
+                />
                 <StyledInput
                     state={[password, setPassword]}
                     type="password"

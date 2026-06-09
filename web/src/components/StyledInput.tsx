@@ -5,7 +5,7 @@ export const StyledInput = ({
     validator,
     onEnter,
 }: {
-    type: 'text' | 'password';
+    type?: 'text' | 'password';
     state: [string, React.Dispatch<React.SetStateAction<string>>];
     label?: string;
     validator?: (input: string) => boolean;
