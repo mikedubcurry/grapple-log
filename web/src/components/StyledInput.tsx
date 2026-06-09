@@ -4,23 +4,27 @@ export const StyledInput = ({
     label,
     validator,
     onEnter,
+    props
 }: {
     type?: 'text' | 'password';
     state: [string, React.Dispatch<React.SetStateAction<string>>];
     label?: string;
     validator?: (input: string) => boolean;
     onEnter?: () => void
+    props?: { [prop: string]: unknown }
 }) => {
     const [value, setValue] = state
     return (
         <div className="w-full">
             <input
-                className="outline-none"
+                className="outline-none w-full"
                 type={type}
                 value={value}
                 onChange={e => setValue(e.target.value)}
                 placeholder={label}
                 onKeyDown={e => e.key === 'Enter' && onEnter?.()}
+                spellCheck={false}
+                {...props}
             />
             <svg viewBox="0 0 100 1" className="w-full h-1">
                 <line

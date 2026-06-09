@@ -8,7 +8,7 @@ export const Login = () => {
     const { login } = useAuth()
 
     const handleLogin = () => {
-        const success = login(password);
+        const success = login(username, password);
         if (success) {
             console.log('logged in')
         } else {

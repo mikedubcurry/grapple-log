@@ -6,7 +6,7 @@ const HARDCODED_USER_ID = 'user-123'
 interface AuthContextValue {
     isAuthenticated: boolean;
     userId: string;
-    login: (password: string) => boolean;
+    login: (username: string, password: string) => boolean;
     logout: () => void;
 }
 
@@ -15,8 +15,8 @@ const AuthContext = createContext<AuthContextValue | null>(null)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(() => !!sessionStorage.getItem(SESSION_KEY))
 
-    const login = (password: string) => {
-        if (password === 'bjj123') {
+    const login = (username: string, password: string) => {
+        if (username === 'mike' && password === 'bjj123') {
             sessionStorage.setItem(SESSION_KEY, 'true')
             setIsAuthenticated(true)
             return true

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* fallback: targets all transition groups */
 /* slow down the card box morph */
 ::view-transition-group(session-card-*) {
     animation-duration: 300ms;
@@ -15,8 +16,4 @@
 ::view-transition-new(session-card-*) {
     animation-delay: 150ms;
     animation-duration: 200ms;
-}
-/* fallback: targets all transition groups */
-::view-transition-group(*) {
-    animation-duration: 300ms;
 }
