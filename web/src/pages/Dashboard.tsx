@@ -1,10 +1,9 @@
-import { Fragment, useState } from "react"
-import { flushSync } from "react-dom"
+import { useState } from "react"
 import { Link } from "react-router"
+import { SessionCard } from "../components/SessionCard"
 
 export const Dashboard = () => {
     const [statsFilter, setStatsFilter] = useState<'week' | 'month' | 'allTime'>('week')
-    const [expanded, setExpanded] = useState(false);
 
     const data = {
         entries: [
@@ -86,7 +85,7 @@ export const Dashboard = () => {
                 }]
 
             }
-        ],
+        ].reverse(),
         stats: {
             week: {
                 sessionCount: 4,
@@ -108,18 +107,6 @@ export const Dashboard = () => {
         },
     }
 
-    const handleTransition = () => {
-        if (!document.startViewTransition) {
-            console.log('no view transition')
-            setExpanded(!expanded)
-            return
-        }
-        document.startViewTransition(() => {
-            flushSync(() => {
-                setExpanded(!expanded)
-            })
-        })
-    }
     return (
         <main className="h-screen m-2 flex flex-col gap-8">
 
@@ -160,72 +147,3 @@ export const Dashboard = () => {
     )
 }
 
-type Session = {
-    id: number;
-    sessionDate: Date;
-    lastUpdated: Date;
-    arts: Art[];
-    injuries: Injury[];
-}
-
-type Art = {
-    art: string;
-    techniques: Technique[];
-}
-
-type Injury = {
-    injury: string;
-    level: number;
-    note: string;
-}
-
-
-type Technique = {
-    technique: string;
-    description: string;
-}
-
-const SessionCard = ({
-    session
-}: {
-    session: Session;
-}) => {
-    const [expanded, setExpanded] = useState(false);
-
-    const toggleExpanded = () => {
-        if (!document.startViewTransition) {
-            setExpanded(!expanded);
-            return;
-        }
-
-        document.startViewTransition(() => {
-            flushSync(() => {
-                setExpanded(!expanded)
-            })
-        })
-    }
-    return (
-        <div
-            className="border p-4"
-            style={{ viewTransitionName: `session-card-${session.id}` }}
-        >
-            <div className="flex justify-between items-center">
-                <p className="font-bold">{session.sessionDate.toLocaleDateString()}</p>
-                <button className="text-3xl p-2" onClick={toggleExpanded} style={{ transition: 'all .3s ease', rotate: expanded ? '0deg' : '180deg' }}>^</button>
-            </div>
-
-            {session.arts.map(art => (
-                <Fragment key={art.art}>
-                    <p className="underline" style={{ viewTransitionName: `session-${session.id}-${art.art.replace(/\s+/g, '-')}` }}>{art.art}</p>
-                    <ul className="pl-8 list-disc" style={{ viewTransitionName: `art-list-${session.id}-${art.art.replace(/\s+/g, '-')}` }}>
-                        {expanded && art.techniques.map(tech => (
-                            <li key={tech.technique}>{tech.technique}</li>
-                        ))}
-                    </ul>
-                </Fragment>
-            ))}
-            <Link to={`/session/${session.id}`} className="py-4 text-xl"><span className="underline">Details</span>&#8614;</Link>
-            <p className="">Last Updated: {session.lastUpdated.toLocaleDateString()}</p>
-        </div>
-    )
-}
