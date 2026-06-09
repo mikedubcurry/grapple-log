@@ -108,7 +108,7 @@ export const Dashboard = () => {
     }
 
     return (
-        <main className="h-screen m-2 flex flex-col gap-8">
+        <main className="h-screen mx-2 pt-2 flex flex-col gap-8">
 
             {/* stats */}
             <dl className="border text-2xl p-4">
