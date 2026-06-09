@@ -1,1 +1,21 @@
-{}
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": ".build",
+    "rootDir": ".",
+    "paths": {
+      "@core/*": ["./core/*"]
+    }
+  },
+  "include": ["functions", "core", "infra", "sst.config.ts", ".sst/platform/config.d.ts"],
+  "exclude": ["web", "node_modules", ".build"]
+}

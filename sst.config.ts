@@ -1,20 +1,29 @@
-/// <reference path="./.sst/platform/config.d.ts" />
-
 export default $config({
-  app(input) {
-    return {
-      name: "monorepo-template",
-      removal: input?.stage === "production" ? "retain" : "remove",
-      protect: ["production"].includes(input?.stage),
-      home: "aws",
-    };
-  },
-  async run() {
-    const storage = await import("./infra/storage");
-    await import("./infra/api");
+    app(input) {
+        return {
+            name: "grapple-log",
+            removal: input?.stage === "production" ? "retain" : "remove",
+            home: "aws",
+            providers: {
+                aws: {
+                    region: "us-east-1",
+                    profile: "grapple-log"
+                },
+            },
+        };
+    },
 
-    return {
-      MyBucket: storage.bucket.name,
-    };
-  },
+    async run() {
+        //const { db, dbHost, dbPort, dbName, dbSecret } = await import("./infra/database");
+        //const { auth, userPoolId, userPoolClientId } = await import("./infra/auth");
+        const { api } = await import("./infra/api");
+        const { web } = await import("./infra/web");
+
+        return {
+            api: api.url,
+            web: web.url,
+            //  userPoolId,
+            //  userPoolClientId,
+        };
+    },
 });
