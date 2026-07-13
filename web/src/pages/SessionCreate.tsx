@@ -14,6 +14,14 @@ export const SessionCreate = () => {
     const [injured, setInjured] = useState<boolean | null>(null);
     const [injExplain, setInjExplain] = useState('');
     const [notes, setNotes] = useState('');
+
+    const saveSession = async () => {
+        setArt('')
+        setTech([])
+        setInjured(null)
+        setInjExplain('')
+        setNotes('')
+    }
     return (
         <main className="mx-2 pt-2">
             <div className="py-4">
@@ -51,6 +59,14 @@ export const SessionCreate = () => {
                     placeholder="Notes"
                 />
             )}
+            <div className="py-4">
+                <button
+                className="w-full border p-2 rounded-md"
+                onClick={saveSession}
+                >
+                    Save Session
+                </button>
+            </div>
         </main>
     )
 }

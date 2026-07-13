@@ -12,7 +12,9 @@
     ]
   },
   "dependencies": {
-    "sst": "*"
+    "mysql2": "^3.22.6",
+    "sst": "*",
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "vitest": "^2"
