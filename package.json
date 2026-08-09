@@ -7,6 +7,7 @@
   "scripts": {},
   "devDependencies": {
     "@tsconfig/node22": "^22",
+    "@types/aws-lambda": "^8.10.162",
     "typescript": "^5"
   },
   "dependencies": {

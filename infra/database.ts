@@ -2,7 +2,7 @@ import * as aws from "@pulumi/aws";
 
 const dbPassword = new sst.Secret("DbPassword");
 
-export const db = new aws.rds.Instance("GrappleLogDb", {
+export const db = new aws.rds.Instance("grapplelog-db", {
   engine: "mysql",
   engineVersion: "8.0",
   instanceClass: "db.t4g.micro",

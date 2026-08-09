@@ -1,4 +1,5 @@
 // infra/api.ts
+import path from "path";
 import { db, dbHost, dbPort, dbName, dbSecret } from "./database";
 
 export const api = new sst.aws.ApiGatewayV2("grapple-log-api", {
@@ -23,19 +24,26 @@ const fnDefaults = {
     handler: "",
     environment,
     link: [db],
+    nodejs: {
+        esbuild: {
+            alias: {
+                "@monorepo-template/core": path.resolve("./packages/core/src"),
+            },
+        },
+    },
 };
 
-api.route("GET /sessions", { ...fnDefaults, handler: "functions/sessions.list" });
-api.route("POST /sessions", { ...fnDefaults, handler: "functions/sessions.create" });
-api.route("GET /sessions/{id}", { ...fnDefaults, handler: "functions/sessions.get" });
-api.route("DELETE /sessions/{id}", { ...fnDefaults, handler: "functions/sessions.remove" });
+api.route("GET /sessions", { ...fnDefaults, handler: "packages/functions/src/sessions.list" });
+api.route("POST /sessions", { ...fnDefaults, handler: "packages/functions/src/sessions.create" });
+api.route("GET /sessions/{id}", { ...fnDefaults, handler: "packages/functions/src/sessions.get" });
+api.route("DELETE /sessions/{id}", { ...fnDefaults, handler: "packages/functions/src/sessions.remove" });
 
-api.route("GET /techniques", { ...fnDefaults, handler: "functions/techniques.list" });
-api.route("POST /techniques", { ...fnDefaults, handler: "functions/techniques.create" });
-api.route("PUT /techniques/{id}", { ...fnDefaults, handler: "functions/techniques.update" });
+api.route("GET /techniques", { ...fnDefaults, handler: "functions/src/techniques.list" });
+api.route("POST /techniques", { ...fnDefaults, handler: "functions/src/techniques.create" });
+api.route("PUT /techniques/{id}", { ...fnDefaults, handler: "functions/src/techniques.update" });
 
-api.route("GET /injuries", { ...fnDefaults, handler: "functions/injuries.list" });
-api.route("POST /injuries", { ...fnDefaults, handler: "functions/injuries.create" });
-api.route("PUT /injuries/{id}", { ...fnDefaults, handler: "functions/injuries.update" });
+api.route("GET /injuries", { ...fnDefaults, handler: "functions/src/injuries.list" });
+api.route("POST /injuries", { ...fnDefaults, handler: "functions/src/injuries.create" });
+api.route("PUT /injuries/{id}", { ...fnDefaults, handler: "functions/src/injuries.update" });
 
-api.route("GET /dashboard", { ...fnDefaults, handler: "functions/dashboard.get" });
+api.route("GET /dashboard", { ...fnDefaults, handler: "functions/src/dashboard.get" });

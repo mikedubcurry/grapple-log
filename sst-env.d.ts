@@ -6,6 +6,10 @@
 
 declare module "sst" {
   export interface Resource {
+    "DbPassword": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "grapple-log-api": {
       "type": "sst.aws.ApiGatewayV2"
       "url": string
